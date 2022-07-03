@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Create Packer AMI') {
             steps { 
-                sh 'packer build -var env=${env} -var app_repo=${app_repo} -var app_name=${app_name} -var ec2_ip=${ec2_ip} -var app_port=${app_port} buildAMI.json'
+                sh 'packer build -var env=${env} -var app_repo=${app_repo} -var app_name=${app_name} -var ec2_ip=${ec2_ip} -var app_port=${app_port} -var repo_branch=${repo_branch} buildAMI.json'
             
             }
         }

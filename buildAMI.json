@@ -35,7 +35,7 @@
       "playbook_file": "play.yml",
       "extra_arguments": [
         "-e",
-        "env={{user `env`}} app_repo={{user `app_repo`}} app_port={{user `app_port`}}"
+        "env={{user `env`}} app_repo={{user `app_repo`}} app_port={{user `app_port`}} repo_branch={{user `repo_branch`}}"
       ]
     }
   ]
