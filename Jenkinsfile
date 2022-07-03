@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        ENV_NAME = "${env.repo_branch == "dev" ? "dev" : "prod"}"
+    }
     stages {
         stage('Récupération de la configuration Packer + Ansible') {
             steps {
@@ -23,14 +25,7 @@ pipeline {
         }
         stage('Create Packer AMI') {
             steps { 
-                withEnv(['repo_branch=dev']) {
-                    sh "echo 'running in dev mode'" 
-                    sh 'packer build -var env=dev -var app_repo=${app_repo} -var app_name=${app_name} -var ec2_ip=${ec2_ip} -var app_port=${app_port} -var repo_branch=${repo_branch} buildAMI.json'
-                }
-                withEnv(['repo_branch=main']) {
-                    sh "echo 'running in prod mode'" 
-                    sh 'packer build -var env=prod -var app_repo=${app_repo} -var app_name=${app_name} -var ec2_ip=${ec2_ip} -var app_port=${app_port} -var repo_branch=${repo_branch} buildAMI.json'
-                }
+                sh 'packer build -var env=${ENV_NAME} -var app_repo=${app_repo} -var app_name=${app_name} -var ec2_ip=${ec2_ip} -var app_port=${app_port} -var repo_branch=${repo_branch} buildAMI.json'   
             }
         }
     }
